@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Phuong2005@
+      POSTGRES_DB: QL_Thiet_Bi
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: Phuong2005@
+      DB_NAME: QL_Thiet_Bi
+    
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
